@@ -15,11 +15,19 @@ audiotest() {
    /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 1750 -t sine
 # Subton 110.9Hz
    /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 110.9 -t sine
+# Sounddatei abspielen
+  if [ -f /tmp/ElenataTestaudio.wav ]
+    then
+         aplay /tmp/ElenataTestaudio.wav
+    else
+         wget https://github.com/SkyAndy/Elenata/raw/main/ElenataTestaudio.wav -O /tmp/ElenataTestaudio.wav
+         aplay /tmp/ElenataTestaudio.wav
+  fi
 
    echo "PTT1-L"; /usr/bin/gpio -g write 13 0
    echo "PTT1-R"; /usr/bin/gpio -g write 5 0
 
-#anpassungen speichern
+# Anpassungen speichern
    /usr/sbin/alsactl store 0 -f /home/svxlink/elenata-III-alsasettings.conf
 
 }
