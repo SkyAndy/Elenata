@@ -16,6 +16,10 @@ dtoverlay=i2s-mmap
 - Anpassung /boot/cmdline.txt
 anhängen bcm2708.vc_i2c_override=1
 
+- Anpassung /etc/modules
+i2c-dev
+snd_soc_rpi_proto
+
 - Overlay runter laden und speichern
 sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/overlays/i2c-gpio.dtbo -O /boot/overlays/i2c-gpio.dtbo
 
