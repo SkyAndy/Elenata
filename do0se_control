@@ -1,6 +1,7 @@
 #!/bin/bash
 # DO7EN 15.12.2021
 # svxlink startskript boesewicht
+# Wenn aplay alsamixer oder speaker-test nicht vorhanden sind, mit sudo apt-get install alsa-utils
 
 audiotest() {
    echo "Lade Alsaconfiguration"
@@ -9,8 +10,6 @@ audiotest() {
    echo "PTT1-L"; /usr/bin/gpio -g write 13 1
    echo "PTT1-R"; /usr/bin/gpio -g write 5 1
 
-# Wenn nicht vorhanden mit apt install alsa-utils
-   /usr/bin/speaker-test -Dplughw:sndrpiproto -c2
 # Oeffnungston 1.75kHz
    /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 1750 -t sine
 # Subton 110.9Hz
