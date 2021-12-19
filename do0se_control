@@ -1,0 +1,87 @@
+#!/bin/bash
+# DO7EN 15.12.2021
+# svxlink startskript boesewicht
+
+audiotest() {
+   echo "Lade Alsaconfiguration"
+   /usr/sbin/alsactl restore 0 -f /home/svxlink/elenata-III-alsasettings.conf
+   echo "gehe auf Rausche-Sendung"
+   echo "PTT1-L"; /usr/bin/gpio -g write 13 1
+   echo "PTT1-R"; /usr/bin/gpio -g write 5 1
+
+# Wenn nicht vorhanden mit apt install alsa-utils
+   /usr/bin/speaker-test/speaker-test -Dplughw:sndrpiproto -c2
+# Oeffnungston 1.75kHz
+   /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 1750 -t sine
+# Subton 110.9Hz
+   /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 110.9 -t sine
+
+   echo "PTT1-L"; /usr/bin/gpio -g write 13 0
+   echo "PTT1-R"; /usr/bin/gpio -g write 5 0
+
+#anpassungen speichern
+   /usr/sbin/alsactl store 0 -f /home/svxlink/elenata-III-alsasettings.conf
+
+}
+
+ptttest() {
+### PTT-L Test ###
+   echo "PTT1-L"; /usr/bin/gpio -g write 13 1
+   sleep 1
+   /usr/bin/gpio -g write 13 0
+### PTT-R Test ###
+   echo "PTT1-R"; /usr/bin/gpio -g write 5 1
+   sleep 1
+   /usr/bin/gpio -g write 5 0
+}
+
+start() {
+   echo "GPIO im System bekannt machen"
+#PTT-R
+   /usr/bin/gpio export 5 out
+   /usr/bin/gpio -g write 5 0
+#PTT-L
+   /usr/bin/gpio export 13 out
+   /usr/bin/gpio -g write 13 0
+#SQL-R
+   /usr/bin/gpio export 6 in
+   /usr/bin/gpio -g write 6 0
+#SQL-L
+   /usr/bin/gpio export 26 in
+   /usr/bin/gpio -g write 26 0
+
+   echo "Rechte setzten"
+   chown -R svxlink:users /sys/class/gpio/gpio5/value
+   chown -R svxlink:users /sys/class/gpio/gpio6/value
+   chown -R svxlink:users /sys/class/gpio/gpio13/value
+   chown -R svxlink:users /sys/class/gpio/gpio26/value
+
+   echo "Rechte GPIO setzen"
+   chmod -R 1777 /sys/class/gpio*
+
+   echo "Lade Audio Rec/Play Alsa-Mixer Einstellungen"
+#sudo apt install alsaplayer-alsa
+   /usr/sbin/alsactl restore 0 -f /home/svxlink/elenata-III-alsasettings.conf
+#zum speichern store nutze. die Zahl 0 ist die Soundkarte als Nummer
+   /usr/sbin/alsactl store 0 -f /home/svxlink/elenata-III-alsasettings.conf
+
+   echo"Starte svxlink als Hintergrunddienst"
+   /usr/bin/svxlink --daemon --config /etc/svxlink/svxlink.conf --logfile /home/svxlink/svxlink.log --runasuser=svxlink
+ 
+}
+
+stop() {
+   echo "Stoppe svxlink"
+   killall -9 
+   sleep 2
+}
+
+case "$1" in
+   start) start ;;
+   stop)  stop;;
+   ptttest) ptttest;;
+   atest) audiotest;;
+   *) echo "usage $0 start | stop | ptttest | atest" >&2
+      exit 1
+      ;;
+esac
