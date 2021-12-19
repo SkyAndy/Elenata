@@ -10,7 +10,7 @@ audiotest() {
    echo "PTT1-R"; /usr/bin/gpio -g write 5 1
 
 # Wenn nicht vorhanden mit apt install alsa-utils
-   /usr/bin/speaker-test/speaker-test -Dplughw:sndrpiproto -c2
+   /usr/bin/speaker-test -Dplughw:sndrpiproto -c2
 # Oeffnungston 1.75kHz
    /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 1750 -t sine
 # Subton 110.9Hz
