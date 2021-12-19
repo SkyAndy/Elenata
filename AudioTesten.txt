@@ -34,6 +34,15 @@ sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/overlays/i2c-g
 
 oder
 
+Aus GitHub die ElenataTestaudio.wav laden. Diese hat definierte normalisierten ( -18 LUFS ) Inhalt:
+4s DTMF *#01234567890
+5s 1750Hz
+5s 110Hz
+10s weißes Rauschen
+Stimme
+
+wget https://github.com/SkyAndy/Elenata/raw/main/ElenataTestaudio.wav
+
 /usr/bin/gpio export 5 out
 /usr/bin/gpio -g write 5 1
 aplay -Dplughw:sndrpiproto ElenataTestaudio.wav
