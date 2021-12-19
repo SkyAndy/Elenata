@@ -1,0 +1,37 @@
+- sudo apt-get update & upgrade
+- sudo raspi-config: Einschalten von I2C und SPI
+- sudo apt-get install i2c-tools libi2c-dev alsa-utils alsa-tools alsa-base wiringpi
+
+- Anpassung /boot/config.txt
+dtparam=i2s=on
+dtparam=i2c=on
+dtparam=i2c_arm=on
+dtparam=i2c0=on
+dtparam=i2c1=on
+dtparam=i2c_vc=on
+dtparam=spi=on
+dtoverlay=rpi-proto
+dtoverlay=i2s-mmap
+
+- Anpassung /boot/cmdline.txt
+anhängen bcm2708.vc_i2c_override=1
+
+- Overlay runter laden und speichern
+sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/overlays/i2c-gpio.dtbo -O /boot/overlays/i2c-gpio.dtbo
+
+- Reboot
+
+### Oberen Teil muss nur einmal erledigt werden. ###
+
+/usr/bin/gpio export 5 out
+/usr/bin/gpio -g write 5 1
+/usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l10 -f 1750 -t sine
+/usr/bin/gpio -g write 5 0
+
+oder
+
+/usr/bin/gpio export 5 out
+/usr/bin/gpio -g write 5 1
+aplay -Dplughw:sndrpiproto ElenataTestaudio.wav
+/usr/bin/gpio -g write 5 0
+
