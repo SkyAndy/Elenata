@@ -3,6 +3,7 @@
 - sudo apt-get install i2c-tools libi2c-dev alsa-utils alsa-tools alsa-base wiringpi
 
 - Anpassung /boot/config.txt
+#dtparam=audio=on
 dtparam=i2s=on
 dtparam=i2c=on
 dtparam=i2c_arm=on
