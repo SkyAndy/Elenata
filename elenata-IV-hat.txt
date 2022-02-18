@@ -1,5 +1,8 @@
 - apt-get install i2c-tools libi2c-dev wiringpi
-wiringPi ist unter Debian 11 nicht verfügbar
+#wiringPi ist unter Debian 11 nicht verfügbar
+git clone https://github.com/WiringPi/WiringPi.git
+cd Wiringpi
+./build
 
 - Anpassung /boot/config.txt
 #dtparam=audio=on
