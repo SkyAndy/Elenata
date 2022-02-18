@@ -54,9 +54,8 @@ setgpio  26    INPUT     DEFAULT
 EOF
 
 dd if=/dev/zero ibs=1k count=4 of=zeros.eep
-./eepflash.sh -w -f=zeros.eep -t=24c32
 ./eepmake eeprom_settings.txt eeprom_settings.eep
-./eepflash.sh -w -f=eeprom_settings.eep -t=24c32
+./eepflash.sh -w -f=eeprom_settings.eep -t=24c32; ./eepflash.sh -w -f=zeros.eep -t=24c32
 
 - Reboot
 cat /proc/device-tree/hat/*
