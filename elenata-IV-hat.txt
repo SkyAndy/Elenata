@@ -5,7 +5,7 @@ cd Wiringpi
 ./build
 
 - Anpassung /boot/config.txt
-#dtparam=audio=on
+#dtparam=audio=on meistens Zeile 53 auf off setzten
 dtparam=i2s=on
 dtparam=i2c=on
 dtparam=i2c_arm=on
