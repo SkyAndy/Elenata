@@ -59,7 +59,7 @@ EOF
 
 dd if=/dev/zero ibs=1k count=4 of=zeros.eep
 ./eepmake eeprom_settings.txt eeprom_settings.eep
-./eepflash.sh -y -w -f=eeprom_settings.eep -t=24c32; ./eepflash.sh -y -w -f=zeros.eep -t=24c32
+./eepflash.sh -y -w -f=zeros.eep -t=24c32; ./eepflash.sh -y -w -f=eeprom_settings.eep -t=24c32
 
 - Reboot
 cat /proc/device-tree/hat/*
