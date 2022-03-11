@@ -49,3 +49,6 @@ wget https://github.com/SkyAndy/Elenata/raw/main/ElenataTestaudio.wav
 aplay -Dplughw:sndrpiproto ElenataTestaudio.wav
 /usr/bin/gpio -g write 5 0
 
+arecord -f dat -d 10 -Dplughw:sndrpiproto /tmp/test-mic-6.wav
+aplay -Dplughw:sndrpiproto /tmp/test-mic-6.wav
+
