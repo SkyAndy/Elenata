@@ -52,3 +52,8 @@ aplay -Dplughw:sndrpiproto ElenataTestaudio.wav
 arecord -f dat -d 10 -Dplughw:sndrpiproto /tmp/test-mic-6.wav
 aplay -Dplughw:sndrpiproto /tmp/test-mic-6.wav
 
+Streaming Audio Raspi <-> Windows/Raspi
+vlc -vvv alsa://plughw:sndrpiproto --sout '#transcode{vcodec=none,acodec=a52,ab=128,channels=2,samplerate=48000,scodec=none}:rtp{dst=192.x.x.x,port=1234,sdp=rtsp://192.x.x.x:8080/test.sdp}'
+
+Client:
+vlc rtsp://192.168.1.121:8080/test.sdp
