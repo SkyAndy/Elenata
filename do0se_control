@@ -1,6 +1,6 @@
 #!/bin/bash
-# DO7EN 15.12.2021
-# svxlink startskript boesewicht
+# DO7EN 14.05.2022
+# svxlink startskript Elenata-VI
 # Wenn aplay alsamixer oder speaker-test nicht vorhanden sind, mit sudo apt-get install alsa-utils
 
 audiotest() {
@@ -40,6 +40,10 @@ ptttest() {
    echo "PTT1-R"; /usr/bin/gpio -g write 5 1
    sleep 1
    /usr/bin/gpio -g write 5 0
+### LINK Test ###
+   echo "LINK"; /usr/bin/gpio -g write 22 1
+   sleep 1
+   /usr/bin/gpio -g write 22 0
 }
 
 start() {
@@ -56,11 +60,15 @@ start() {
 #SQL-L
    /usr/bin/gpio export 26 in
    /usr/bin/gpio -g write 26 0
+#LINK
+   /usr/bin/gpio export 22 out
+   /usr/bin/gpio -g write 22 0
 
    echo "Rechte setzten"
    chown -R svxlink:users /sys/class/gpio/gpio5/value
    chown -R svxlink:users /sys/class/gpio/gpio6/value
    chown -R svxlink:users /sys/class/gpio/gpio13/value
+   chown -R svxlink:users /sys/class/gpio/gpio22/value
    chown -R svxlink:users /sys/class/gpio/gpio26/value
 
    echo "Rechte GPIO setzen"
@@ -74,12 +82,12 @@ start() {
 
    echo"Starte svxlink als Hintergrunddienst"
    /usr/bin/svxlink --daemon --config /etc/svxlink/svxlink.conf --logfile /home/svxlink/svxlink.log --runasuser=svxlink
- 
+
 }
 
 stop() {
    echo "Stoppe svxlink"
-   killall -9 
+   killall -9
    sleep 2
 }
 
