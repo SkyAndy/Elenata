@@ -38,11 +38,11 @@ product_uuid c247d9cb-8bf6-4f12-ba9f-2823896447eb
 # 16 bit product id
 product_id 0x7476
 # 16 bit product version
-product_ver 0x0005
+product_ver 0x0006
 # ASCII vendor string  (max 255 characters)
-vendor "DO7EN #5 202202"
+vendor "DO7EN #6 2022/05"
 # ASCII product string (max 255 characters)
-product "Elenata V pHAT Red"
+product "Elenata VI pHAT Black"
 # drive strength, 0=default, 1-8=2,4,6,8,10,12,14,16mA, 9-15=reserved
 gpio_drive 0
 # 0=default, 1=slew rate limiting, 2=no slew limiting, 3=reserved
@@ -54,6 +54,7 @@ back_power 0
 setgpio  5     OUTPUT    DEFAULT
 setgpio  6     INPUT     DEFAULT
 setgpio  13    OUTPUT    DEFAULT
+setgpio  22    OUTPUT    DEFAULT
 setgpio  26    INPUT     DEFAULT
 EOF
 
