@@ -87,7 +87,10 @@ start() {
 
 stop() {
    echo "Stoppe svxlink"
-   killall -9
+   killall -9 svxlink
+   # PTT abschalten
+   /usr/bin/gpio -g write 5 0
+   /usr/bin/gpio -g write 13 0
    sleep 2
 }
 
