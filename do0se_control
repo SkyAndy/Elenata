@@ -5,7 +5,7 @@
 
 audiotest() {
    echo "Lade Alsaconfiguration"
-   /usr/sbin/alsactl restore 0 -f /home/svxlink/elenata-III-alsasettings.conf
+   /usr/sbin/alsactl restore 0 -f /home/svxlink/elenata-alsasettings.conf
    echo "gehe auf Rausche-Sendung"
    echo "PTT1-L"; /usr/bin/gpio -g write 13 1
    echo "PTT1-R"; /usr/bin/gpio -g write 5 1
@@ -27,7 +27,7 @@ audiotest() {
    echo "PTT1-R"; /usr/bin/gpio -g write 5 0
 
 # Anpassungen speichern
-   /usr/sbin/alsactl store 0 -f /home/svxlink/elenata-III-alsasettings.conf
+   /usr/sbin/alsactl store 0 -f /home/svxlink/elenata-alsasettings.conf
 
 }
 
@@ -76,9 +76,9 @@ start() {
 
    echo "Lade Audio Rec/Play Alsa-Mixer Einstellungen"
 #sudo apt install alsaplayer-alsa
-   /usr/sbin/alsactl restore 0 -f /home/svxlink/elenata-III-alsasettings.conf
+   /usr/sbin/alsactl restore 0 -f /home/svxlink/elenata-alsasettings.conf
 #zum speichern store nutze. die Zahl 0 ist die Soundkarte als Nummer
-   /usr/sbin/alsactl store 0 -f /home/svxlink/elenata-III-alsasettings.conf
+   /usr/sbin/alsactl store 0 -f /home/svxlink/elenata-alsasettings.conf
 
    echo"Starte svxlink als Hintergrunddienst"
    /usr/bin/svxlink --daemon --config /etc/svxlink/svxlink.conf --logfile /home/svxlink/svxlink.log --runasuser=svxlink
