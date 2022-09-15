@@ -1,6 +1,6 @@
 #!/bin/bash
-# DO7EN 14.05.2022
-# svxlink startskript Elenata-VI
+# DG5SSE aka DO7EN 15.09.2022
+# svxlink startskript Elenata-PCB
 # Wenn aplay alsamixer oder speaker-test nicht vorhanden sind, mit sudo apt-get install alsa-utils
 # Aufname LineIn und Mux Regler auf LineIn setzen
 
