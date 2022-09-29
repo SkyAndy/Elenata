@@ -1,26 +1,30 @@
 #!/bin/bash
-# DG5SSE aka DO7EN 15.09.2022
+# DG5SSE aka DO7EN 29.09.2022
 # svxlink startskript Elenata-PCB
 # Wenn aplay alsamixer oder speaker-test nicht vorhanden sind, mit sudo apt-get install alsa-utils
 # Aufname LineIn und Mux Regler auf LineIn setzen
 
-gpiosetzten() {
+gpio=$(whereis gpio | grep -i bin | cut -d" " -f2)
+alsactl=$(whereis alsactl | grep -i sbin | cut -d " " -f2)
+sptest=$(whereis speaker-test | grep -i bin | cut -d " " -f2)
+
+gpioklarschiff() {
    echo "GPIO im System bekannt machen"
 #PTT-R
-   /usr/bin/gpio export 5 out
-   /usr/bin/gpio -g write 5 0
+   $gpio export 5 out
+   $gpio -g write 5 0
 #PTT-L
-   /usr/bin/gpio export 13 out
-   /usr/bin/gpio -g write 13 0
+   $gpio export 13 out
+   $gpio -g write 13 0
 #SQL-R
-   /usr/bin/gpio export 6 in
-   /usr/bin/gpio -g write 6 0
+   $gpio export 6 in
+   $gpio -g write 6 0
 #SQL-L
-   /usr/bin/gpio export 26 in
-   /usr/bin/gpio -g write 26 0
+   $gpio export 26 in
+   $gpio -g write 26 0
 #LINK
-   /usr/bin/gpio export 22 out
-   /usr/bin/gpio -g write 22 0
+   $gpio export 22 out
+   $gpio -g write 22 0
 
    echo "Rechte setzten"
    chown -R svxlink:users /sys/class/gpio/gpio5/value
@@ -35,15 +39,15 @@ gpiosetzten() {
 
 audiotest() {
    echo "Lade Alsaconfiguration"
-   /usr/sbin/alsactl restore sndrpiproto -f /home/svxlink/elenata-alsasettings.conf
+   $alsactl restore sndrpiproto -f /home/svxlink/elenata-alsasettings.conf
    echo "gehe auf Rausche-Sendung"
-   echo "PTT1-L"; /usr/bin/gpio -g write 13 1
-   echo "PTT1-R"; /usr/bin/gpio -g write 5 1
+   echo "PTT1-L"; $gpio -g write 13 1
+   echo "PTT1-R"; $gpio -g write 5 1
 
 # Oeffnungston 1.75kHz
-   /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 1750 -t sine
+   $sptest -Dplughw:sndrpiproto -c2 -l 3 -f 1750 -t sine
 # Subton 110.9Hz
-   /usr/bin/speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 110.9 -t sine
+   $sptest -Dplughw:sndrpiproto -c2 -l 3 -f 110.9 -t sine
 # Sounddatei abspielen
   if [ -f /tmp/ElenataTestaudio.wav ]
     then
@@ -53,33 +57,33 @@ audiotest() {
          aplay /tmp/ElenataTestaudio.wav
   fi
 
-   echo "PTT1-L"; /usr/bin/gpio -g write 13 0
-   echo "PTT1-R"; /usr/bin/gpio -g write 5 0
+   echo "PTT1-L"; $gpio -g write 13 0
+   echo "PTT1-R"; $gpio -g write 5 0
 
 # Anpassungen speichern
-   /usr/sbin/alsactl store sndrpiproto -f /home/svxlink/elenata-alsasettings.conf
+   $alsactl store sndrpiproto -f /home/svxlink/elenata-alsasettings.conf
 }
 
 ptttest() {
 ### PTT-L Test ###
-   echo "PTT1-L"; /usr/bin/gpio -g write 13 1
+   echo "PTT1-L"; $gpio -g write 13 1
    sleep 1
-   /usr/bin/gpio -g write 13 0
+   $gpio -g write 13 0
 ### PTT-R Test ###
-   echo "PTT1-R"; /usr/bin/gpio -g write 5 1
+   echo "PTT1-R"; $gpio -g write 5 1
    sleep 1
-   /usr/bin/gpio -g write 5 0
+   $gpio -g write 5 0
 ### LINK Test ###
-   echo "LINK"; /usr/bin/gpio -g write 22 1
+   echo "LINK"; $gpio -g write 22 1
    sleep 1
-   /usr/bin/gpio -g write 22 0
+   $gpio -g write 22 0
 }
 
 start() {
 
    echo "Lade Audio Rec/Play Alsa-Mixer Einstellungen"
 #sudo apt install alsaplayer-alsa
-   /usr/sbin/alsactl restore sndrpiproto -f /home/svxlink/elenata-alsasettings.conf
+   $alsactl restore sndrpiproto -f /home/svxlink/elenata-alsasettings.conf
 
 echo "Starte svxlink als Hintergrunddienst"
    /usr/bin/svxlink --daemon --config /etc/svxlink/svxlink.conf --logfile /home/svxlink/svxlink.log --runasuser=svxlink
@@ -90,12 +94,12 @@ stop() {
    echo "Stoppe svxlink"
    killall -9 svxlink
    # PTT abschalten
-   /usr/bin/gpio -g write 5 0
-   /usr/bin/gpio -g write 13 0
+   $gpio -g write 5 0
+   $gpio -g write 13 0
    sleep 2
 }
 
-gpiosetzten
+gpioklarschiff
 
 case "$1" in
    start) start;;
