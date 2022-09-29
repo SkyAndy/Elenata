@@ -4,6 +4,35 @@
 # Wenn aplay alsamixer oder speaker-test nicht vorhanden sind, mit sudo apt-get install alsa-utils
 # Aufname LineIn und Mux Regler auf LineIn setzen
 
+gpiosetzten() {
+   echo "GPIO im System bekannt machen"
+#PTT-R
+   /usr/bin/gpio export 5 out
+   /usr/bin/gpio -g write 5 0
+#PTT-L
+   /usr/bin/gpio export 13 out
+   /usr/bin/gpio -g write 13 0
+#SQL-R
+   /usr/bin/gpio export 6 in
+   /usr/bin/gpio -g write 6 0
+#SQL-L
+   /usr/bin/gpio export 26 in
+   /usr/bin/gpio -g write 26 0
+#LINK
+   /usr/bin/gpio export 22 out
+   /usr/bin/gpio -g write 22 0
+
+   echo "Rechte setzten"
+   chown -R svxlink:users /sys/class/gpio/gpio5/value
+   chown -R svxlink:users /sys/class/gpio/gpio6/value
+   chown -R svxlink:users /sys/class/gpio/gpio13/value
+   chown -R svxlink:users /sys/class/gpio/gpio22/value
+   chown -R svxlink:users /sys/class/gpio/gpio26/value
+
+   echo "Rechte GPIO setzen"
+   chmod -R 1777 /sys/class/gpio*
+}
+
 audiotest() {
    echo "Lade Alsaconfiguration"
    /usr/sbin/alsactl restore sndrpiproto -f /home/svxlink/elenata-alsasettings.conf
@@ -47,32 +76,6 @@ ptttest() {
 }
 
 start() {
-   echo "GPIO im System bekannt machen"
-#PTT-R
-   /usr/bin/gpio export 5 out
-   /usr/bin/gpio -g write 5 0
-#PTT-L
-   /usr/bin/gpio export 13 out
-   /usr/bin/gpio -g write 13 0
-#SQL-R
-   /usr/bin/gpio export 6 in
-   /usr/bin/gpio -g write 6 0
-#SQL-L
-   /usr/bin/gpio export 26 in
-   /usr/bin/gpio -g write 26 0
-#LINK
-   /usr/bin/gpio export 22 out
-   /usr/bin/gpio -g write 22 0
-
-   echo "Rechte setzten"
-   chown -R svxlink:users /sys/class/gpio/gpio5/value
-   chown -R svxlink:users /sys/class/gpio/gpio6/value
-   chown -R svxlink:users /sys/class/gpio/gpio13/value
-   chown -R svxlink:users /sys/class/gpio/gpio22/value
-   chown -R svxlink:users /sys/class/gpio/gpio26/value
-
-   echo "Rechte GPIO setzen"
-   chmod -R 1777 /sys/class/gpio*
 
    echo "Lade Audio Rec/Play Alsa-Mixer Einstellungen"
 #sudo apt install alsaplayer-alsa
@@ -92,8 +95,10 @@ stop() {
    sleep 2
 }
 
+gpiosetzten
+
 case "$1" in
-   start) start ;;
+   start) start;;
    stop)  stop;;
    ptttest) ptttest;;
    atest) audiotest;;
