@@ -1,0 +1,47 @@
+Ab Hardware Version 9 ist der I2C Bus 0 am OLED und EEPROM.
+Der Audiochip bleibt am BUS 1
+
+i2cdetect -l
+muss i2c-0 auftauchen
+
+Wenn nicht /boot/config.txt
+dtparam=i2c_vc=on 
+einfügen und reboot
+
+i2cdetect -y 0
+muss nun die 3c auftauchen vom OLED und die 50 vom EEPROM
+
+!!! SSD1306 Adafruit Python NICHT DIE AUS DEN DEBIANQUELLEN mit apt installieren !!!
+sondern 
+cd /home/svxlink/
+git clone https://github.com/adafruit/Adafruit_Python_SSD1306.git
+cd Adafruit_Python_SSD1306
+sudo python3 setup.py install
+
+cd /home/svxlink/skripte
+
+oled.py anlegen und mit Inhalt füllen
+
+import time
+import Adafruit_SSD1306
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+RST = None;
+disp = Adafruit_SSD1306.SSD1306_128_64(rst=RST,i2c_bus=0)
+disp.begin()
+disp.clear()
+disp.display()
+width = disp.width
+height = disp.height
+image = Image.new('1', (width, height))
+draw = ImageDraw.Draw(image)
+draw.rectangle((0,0,width,height), outline=0, fill=0)
+font = ImageFont.load_default()
+draw.text((0, 10),    'ELENATA DK1LO',  font=font, fill=255)
+draw.text((0, 20), 'Oled Beispieltext', font=font, fill=255)
+disp.image(image)
+disp.display()
+
+chmod +x oled.py
+python3 oled.py
