@@ -1,0 +1,18 @@
+# cat /boot/config.txt | sed -e "/#/d"
+
+dtparam=i2c0=on
+dtparam=i2c1=on
+dtoverlay=rpi-proto
+dtparam=audio=off
+camera_auto_detect=1
+display_auto_detect=1
+max_framebuffers=2
+disable_overscan=1
+[cm4]
+otg_mode=1
+[all]
+[pi4]
+arm_boost=1
+[all]
+enable_uart=1
+gpu_mem=16
