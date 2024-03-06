@@ -1,5 +1,4 @@
 # cat /boot/config.txt | sed -e "/#/d"
-
 dtparam=i2c0=on
 dtparam=i2c1=on
 dtoverlay=rpi-proto
@@ -16,3 +15,14 @@ arm_boost=1
 [all]
 enable_uart=1
 gpu_mem=16
+
+----8<----
+
+# cat /etc/modules
+snd_soc_bcm2708
+bcm2708_dmaengine
+snd_soc_pcm5102a
+snd_soc_hifiberry_dac
+i2c-dev
+
+Debian Bookworm
