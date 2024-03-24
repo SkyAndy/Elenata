@@ -4,10 +4,10 @@ git clone https://github.com/WiringPi/WiringPi.git
 cd Wiringpi
 ./build
 
-apt install vim screen cmake libsigc++-2.0-dev libpopt-dev tcl tcl-dev libpopt-dev libgcrypt-dev libasound-dev libgsm1-dev alsa-utils opus-tools libogg-dev libspeex-dev libopus-dev libjsoncpp-dev libcurl4-gnutls-dev
-
-cmake .. -DUSE_QT=NO
-
+apt install vim vim-airline-themes gpiod build-essential screen cmake libsigc++-2.0-dev libpopt-dev tcl tcl-dev libpopt-dev libgcrypt-dev libasound-dev libgsm1-dev alsa-utils opus-tools libogg-dev libspeex-dev libopus-dev libjsoncpp-dev libcurl4-gnutls-dev
+mkdir build; cd build
+cmake ../ -DUSE_QT=NO
+make -j2
 
 - Anpassung /boot/config.txt
 #dtparam=audio=on meistens Zeile 53 auf off setzten
