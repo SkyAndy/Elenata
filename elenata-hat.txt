@@ -4,7 +4,7 @@ git clone https://github.com/WiringPi/WiringPi.git
 cd Wiringpi
 ./build
 
-apt install vim vim-airline-themes gpiod build-essential screen cmake libsigc++-2.0-dev libpopt-dev tcl tcl-dev libpopt-dev libgcrypt-dev libasound-dev libgsm1-dev alsa-utils opus-tools libogg-dev libspeex-dev libopus-dev libjsoncpp-dev libcurl4-gnutls-dev
+apt install vim vim-airline-themes librtlsdr-dev libgpiod-dev gpiod build-essential screen cmake libsigc++-2.0-dev libpopt-dev tcl tcl-dev libpopt-dev libgcrypt-dev libasound-dev libgsm1-dev alsa-utils opus-tools libogg-dev libspeex-dev libopus-dev libjsoncpp-dev libcurl4-gnutls-dev
 mkdir build; cd build
 cmake ../ -DUSE_QT=NO
 make -j2
