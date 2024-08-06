@@ -1,0 +1,21 @@
+06.08.2024 Beta Elenata TL5v1
+
+NXP Audio
+JST 1mm P6 / P4 Buchsen
+
+Features
+Analog Inputs
+• Stereo LINEIN - Support for external analog input
+• Stereo LINEIN - Codec bypass for low power
+• MIC bias provided
+• Programmable MIC gain
+• ADC - 85 dB SNR (-60 dB input) and -73 dB THD+N
+(VDDA = 1.8 V)
+Analog Outputs
+• HP Output - Capless design
+• HP Output - 62.5 mW max, 1.02 kHz sine into 16 Ω load at 3.3 V
+• HP Output - 100 dB SNR (-60 dB input) and -80 dB THD+N
+(VDDA = 1.8 V, 16 Ω load, DAC to headphone)
+• LINEOUT - 100 dB SNR (-60 dB input) and -85 dB THD+N
+(VDDIO = 3.3 V)
+
