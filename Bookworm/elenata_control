@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DK1LO 28.03.2024
+# DK1LO 14.11.2024
 #
 # svxlink startskript Elenata-PCB
 # Wenn aplay alsamixer oder speaker-test nicht vorhanden sind, mit sudo apt-get install alsa-utils
