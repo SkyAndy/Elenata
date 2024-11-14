@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DK1LO 10.11.2024
+# DK1LO 28.03.2024
 #
 # svxlink startskript Elenata-PCB
 # Wenn aplay alsamixer oder speaker-test nicht vorhanden sind, mit sudo apt-get install alsa-utils
@@ -15,20 +15,31 @@ echo $gpio $alsactl $sptest
 # https://github.com/raspberrypi/linux/issues/5668
 # GPIO Nummer Plus-GPIO-Chip-Nummer hier die 512
 
-echo "525" > /sys/class/gpio/export
-echo "517" > /sys/class/gpio/export
-echo "518" > /sys/class/gpio/export
-echo "538" > /sys/class/gpio/export
+echo "517" > $GPIOS/export
+echo "518" >  $GPIOS/export
+echo "525" >  $GPIOS/export
+echo "538" > $GPIOS/export
+
+tabelle() {
+	cat << EOF
+-=# MERKTABELLE #=-
+525 (13) OUT PTT Links
+538 (26) IN SQL Links
+//
+517  (5) OUT PTT Rechts
+518  (6) IN SQL Rechts
+EOF
+}
 
 gpioklarschiff() {
    echo "GPIO im System bekannt machen"
-#PTT-R
-   $gpio set 5 op pd dl
 #PTT-L
    $gpio set 13 op pd dl
-#SQL-R
-   $gpio set 6 ip pd
 #SQL-L
+   $gpio set 6 ip pd
+#PTT-R
+   $gpio set 5 op pd dl
+#SQL-R
    $gpio set 26 ip pd
 
    echo "Rechte setzten"
@@ -36,7 +47,6 @@ gpioklarschiff() {
    chown -R svxlink:users /sys/class/gpio/gpio518/value
    chown -R svxlink:users /sys/class/gpio/gpio525/value
    chown -R svxlink:users /sys/class/gpio/gpio538/value
-
    echo "Rechte GPIO setzen"
    chmod -R 1777 /sys/class/gpio*
 }
@@ -45,8 +55,8 @@ audiotest() {
    echo "Lade Alsaconfiguration"
    $alsactl restore Audio -f /home/svxlink/skripte/elenata-alsasettings.conf
    echo "gehe auf Rausche-Sendung"
-   echo "PTT-L EIN";$gpio set 13 op pd dl
-   echo "PTT-R EIN";$gpio set 5 op pd dl
+   echo "PTT-L-H"; $gpio set 13 op pd dh
+   echo "PTT-R-H"; $gpio set 5 op pd dh
 
 # Oeffnungston 1.75kHz
    $sptest -Dplughw:Audio -c2 -l 3 -f 1750 -t sine
@@ -58,11 +68,11 @@ audiotest() {
          aplay /tmp/ElenataTestaudio.wav
     else
          wget https://github.com/SkyAndy/Elenata/raw/main/ElenataTestaudio.wav -O /tmp/ElenataTestaudio.wav
-         aplay /tmp/ElenataTestaudio.wav
+         aplay -D plughw:Audio /tmp/ElenataTestaudio.wav
   fi
+   echo "PTT-L-L"; $gpio set 13 op pd dl
+   echo "PTT-R-L"; $gpio set 5 op pd dl
 
-   echo "PTT-L AUS";$gpio set 13 op pd dl
-   echo "PTT-R AUS";$gpio set 5 op pd dl
 
 # Anpassungen speichern
    $alsactl store Audio -f /home/svxlink/skripte/elenata-alsasettings.conf
@@ -70,14 +80,15 @@ audiotest() {
 
 ptttest() {
 ### PTT-L Test ###
-   echo "PTT-L AN";$gpio set 13 op pd dh
+   echo "PTT-L-HIGH"; $gpio set 13 op pd dh
    sleep 1
-   echo "PTT-L AUS";$gpio set 13 op pd dl
-
+   echo "PTT-L-LOW"; $gpio set 13 op pd dl
+   sleep 1
 ### PTT-R Test ###
-   echo "PTT-R AN";$gpio set 5 op pd dh
+   echo "PTT-R-HIGH"; $gpio set 5 op pd dh
    sleep 1
-   echo "PTT-R AUS";$gpio set 5 op pd dl
+   echo "PTT-R-LOW"; $gpio set 5 op pd dl
+   sleep 1
 }
 
 start() {
@@ -95,8 +106,8 @@ stop() {
    echo "Stoppe svxlink"
    killall -9 svxlink
    # PTT abschalten
-   echo "PTT-L AUS";$gpio set 13 op pd dl
-   echo "PTT-R AUS";$gpio set 5 op pd dl
+   echo "PTT-L-LOW"; $gpio set 13 op pd dh
+   echo "PTT-R-LOW"; $gpio set 5 op pd dh
    sleep 2
 }
 
@@ -107,7 +118,8 @@ case "$1" in
    stop)  stop;;
    ptttest) ptttest;;
    atest) audiotest;;
-   *) echo "usage $0 start | stop | ptttest | atest" >&2
+   help) tabelle;;
+   *) echo "usage $0 help | start | stop | ptttest | atest" >&2
       exit 1
       ;;
 esac
