@@ -1,0 +1,9 @@
+#!/bin/bash
+cp /home/svxlink/skripte/ReflectorLogicTGOFF.tcl /usr/local/share/svxlink/events.d/ReflectorLogic.tcl
+
+killall -9 svxlink
+sleep 3
+echo 0 > /sys/class/gpio/gpio13/value
+echo 0 > /sys/class/gpio/gpio5/value
+
+/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/svxlink.conf --logfile /home/svxlink/svxlink.log --runasuser=svxlink

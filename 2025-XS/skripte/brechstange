@@ -1,0 +1,5 @@
+#!/bin/bash
+cp -r /home/svxlink/svxlink/src/build/bin/* /usr/local/bin/
+cp -r /home/svxlink/svxlink/src/build/lib/* /usr/local/lib/svxlink/
+
+

@@ -1,0 +1,49 @@
+#!/bin/bash
+# DK1LO 2022.w44.4
+
+GPIOS=/sys/class/gpio
+
+case $1 in
+'pttlow')
+	echo "Schalte PTT ab"
+	echo 0 > $GPIOS/gpio13/value
+	echo 0 > $GPIOS/gpio5/value
+
+;;
+'simplex')
+	echo "setzte SimplexModus"
+	killall -9 svxlink
+	rm /usr/local/etc/svxlink/svxlink.conf
+	ln -s /usr/local/etc/svxlink/intern-simplex.conf /usr/local/etc/svxlink/svxlink.conf
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/svxlink.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+;;
+'repeater')
+	echo "setzte RepeaterModus"
+	killall -9 svxlink
+	rm /usr/local/etc/svxlink/svxlink.conf
+	ln -s /usr/local/etc/svxlink/intern-repeater.conf /usr/local/etc/svxlink/svxlink.conf
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/svxlink.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+	echo "OK"
+;;
+'sennheiserstereo')
+	echo "setzte Sennheiser Stereo"
+	killall -9 svxlink
+	rm /usr/local/etc/svxlink/svxlink.conf
+	ln -s /usr/local/etc/svxlink/sennheiser-stereo.conf /usr/local/etc/svxlink/svxlink.conf
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/svxlink.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+	echo "OK"
+;;
+'sennheiservox')
+	echo "setzte RepeaterModus"
+	killall -9 svxlink
+	rm /usr/local/etc/svxlink/svxlink.conf
+	ln -s /usr/local/etc/svxlink/sennheiser-vox.conf /usr/local/etc/svxlink/svxlink.conf
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/svxlink.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+	echo "OK"
+;;
+'-h')
+	echo "$1 simplex oder repeater bitte"
+;;
+'*') echo "usage $0 simplex repeater sennheiserstereo sennheiservox" >&2
+;;
+esac

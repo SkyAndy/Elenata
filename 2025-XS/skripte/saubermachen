@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sed -i 's/DNS_DOMAIN.*$/DNS_DOMAIN=127.0.0.1/' /usr/local/etc/svxlink/*.conf
+sed -i 's/AUTH_KEY.*$/AUTH_KEY=******/' /usr/local/etc/svxlink/*.conf
+sed -i 's/CALLSIGN.*$/CALLSIGN=******/' /usr/local/etc/svxlink/*.conf
+sed -i 's/DEFAULT_TG.*$/DEFAULT_TG=0/' /usr/local/etc/svxlink/*.conf
+sed -i 's/PTT_PIN.*$/PTT_PIN=gpio5/' /usr/local/etc/svxlink/*.conf
+sed -i 's/GPIO_SQL_PIN.*$/GPIO_SQL_PIN=gpio6/' /usr/local/etc/svxlink/*.conf
+

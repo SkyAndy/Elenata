@@ -1,0 +1,5 @@
+#!/bin/bash
+sed -i 's/AUTH_KEY.*$/AUTH_KEY=******/' /usr/local/etc/svxlink/*.conf
+sed -i 's/CALLSIGN.*$/CALLSIGN=******/' /usr/local/etc/svxlink/*.conf
+sed -i 's/DEFAULT_TG.*$/DEFAULT_TG=0/' /usr/local/etc/svxlink/*.conf
+

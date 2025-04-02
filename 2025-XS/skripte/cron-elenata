@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "nameserver 8.8.8.8" > /etc/resolv.conf
+/usr/sbin/ntpdate-debian
+/home/svxlink/skripte/wachhund
+

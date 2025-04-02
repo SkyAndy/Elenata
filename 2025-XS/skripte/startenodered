@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /home/svxlink
+/usr/bin/screen -dm -S RED node-red-start

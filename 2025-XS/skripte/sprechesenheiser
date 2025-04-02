@@ -1,0 +1,34 @@
+#!/bin/bash
+# DK1LO 2022.w44.4
+
+killall -9 svxlink
+sleep 5
+gpio=$(whereis pinctrl | grep -i bin | cut -d" " -f2)
+$gpio set 13 op pd dl
+$gpio set 5 op pd dl
+
+links () {
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/senheiser-l.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+}
+
+rechts () {
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/senheiser-r.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+}
+
+stereo () {
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/senheiser.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+}
+
+vox () {
+	/usr/local/bin/svxlink --daemon --config /usr/local/etc/svxlink/senheiser-vox.conf --logfile /var/log/svxlink.log --runasuser=svxlink
+}
+
+case "$1" in
+   links) links;;
+   rechts) rechts;;
+   stereo) stereo;;
+   vox) vox;;
+   *) echo "usage $0 links | rechts | stereo | vox" >&2
+      exit 1
+      ;;
+esac

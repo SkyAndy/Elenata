@@ -1,0 +1,27 @@
+#!/bin/bash
+#echo "ACHTUNG WACHUND PENNT"; exit 0;
+
+SVX="svxlink"
+RED="node-red"
+#wget -q -b https://hamcloud.center/elenata/download/
+
+
+if pgrep -x "$SVX" >/dev/null
+then
+	echo "ok"
+else
+	echo "$SERVICE starten..."
+	sudo /home/svxlink/skripte/elenata_control start
+fi
+
+if pgrep -x "$RED" >/dev/null
+then
+	echo "ok"
+else
+	echo "$RED starten..."
+	sleep 15
+	sudo -u svxlink /home/svxlink/skripte/startenodered
+fi
+
+exit 0
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+# arecord -D plughw:Audio -V stereo -d 10 -t wav -r 16000 /home/svxlink/test.wav
+speaker-test -Dplughw:Audio -c2 -l 3 -f 1750 -t sine
+
