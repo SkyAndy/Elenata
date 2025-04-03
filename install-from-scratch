@@ -1,0 +1,102 @@
+# DK1LO 3.4.2k25
+# Linux elenata 6.12.21-v8+ #1870 SMP PREEMPT Wed Apr  2 20:18:03 BST 2025 aarch64 GNU/Linux
+
+# nur bis Elenata bis Version XI
+rpi-imager Raspberry Pi OS Lite (32-bit) !!! nicht 64bit !!! 19.11.2024 zum Zeitpunk der Doku
+
+# Elenata ab/für TL5v1 - XS - 2025
+rpi-imager Raspberry Pi OS Lite (64-bit) 19.11.2024 zum Zeitpunk der Doku
+
+sudo su
+apt update; apt install vim 
+rpi-update
+
+raspi-config I2C unter "3 Interface Options" aktivieren
+vim /boot/firmware/cmdline.txt bcm2708.vc_i2c_override=1 anhängen
+
+# nur bis Elenata bis Version XI
+echo "snd_soc_rpi_proto" >> /etc/modules
+
+cat << EOF > /etc/asound.conf
+pcm.!default {
+    type hw
+    card 0
+    channels 2           # Stereo (2 Kanäle)
+    #period_size 1024     # Puffergröße
+    #period_time 0        # Zeit für den Puffer
+}
+
+ctl.!default {
+    type hw
+    card 0
+}
+EOF
+
+# cat /boot/firmware/config.txt | sed -e "/#/d"
+# oder erstellen mit folgenden zeilen
+
+cat << EOF > /boot/firmware/config.txt
+dtoverlay=i2s-mmap
+# Elenata bis Version XI
+# ACHTUNG mit neuerer kernel und PI3xx Blauzahn verbieten
+dtoverlay=pi3-disable-bt
+dtoverlay=rpi-proto
+
+# Bei Elenata ab/für TL5v1 - XS - 2025
+#dtoverlay=fe-pi-audio
+
+dtparam=audio=off
+dtparam=i2c_arm=on
+dtparam=i2c_vc=on
+dtparam=i2c0=on
+dtparam=i2c1=on
+dtparam=i2s=on
+dtparam=spi=on
+
+camera_auto_detect=1
+display_auto_detect=1
+max_framebuffers=2
+disable_overscan=1
+[cm4]
+otg_mode=1
+[all]
+[pi4]
+arm_boost=1
+[all]
+enable_uart=1
+gpu_mem=256
+hdmi_force_hotplug=1
+hdmi_group=2
+hdmi_mode=16
+EOF
+
+reboot
+
+sudo su
+apt-get update; apt install libssl-dev vim vim-airline-themes librtlsdr-dev libgpiod-dev gpiod build-essential screen cmake libsigc++-2.0-dev libpopt-dev tcl tcl-dev libpopt-dev libgcrypt20-dev libasound2-dev libgsm1-dev alsa-utils opus-tools libogg-dev libspeex-dev libopus-dev libjsoncpp-dev libcurl4-gnutls-dev git mc i2c-tools libi2c-dev btop i2c-tools libi2c-dev
+
+arecord -l
+speaker-test -Dplughw:sndrpiproto -c2 -l 3 -f 1750 -t sine
+
+cd /home/svxlink
+git clone https://github.com/sm0svx/svxlink.git
+
+cd /home/svxlink/svxlink/src/; mkdir build; cd build/; cmake ../ -DUSE_QT=NO
+make -j2
+
+# Konfigs sind passend zu den Versionen 
+# https://github.com/SkyAndy/Elenata/tree/main/2025-XS
+# https://github.com/SkyAndy/Elenata/blob/main/TL5
+
+# Elenata Hardware Allgemeine Infos
+# https://hamcloud.center/elenata/
+
+arecord -f dat -d 10 -Dplughw:sndrpiproto /tmp/test-mic-6.wav
+aplay -Dplughw:sndrpiproto /tmp/test-mic-6.wav
+
+Streaming Audio Raspi <-> Windows/Raspi
+vlc -vvv alsa://plughw:sndrpiproto --sout '#transcode{vcodec=none,acodec=a52,ab=128,channels=2,samplerate=48000,scodec=none}:rtp{dst=192.x.x.x,port=1234,sdp=rtsp://192.x.x.x:8080/test.sdp}'
+
+Client:
+vlc rtsp://192.168.1.121:8080/test.sdp
+
