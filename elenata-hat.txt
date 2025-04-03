@@ -1,38 +1,3 @@
-- apt-get install i2c-tools libi2c-dev wiringpi
-#wiringPi ist unter Debian 11 nicht verfügbar
-git clone https://github.com/WiringPi/WiringPi.git
-cd Wiringpi
-./build
-
-apt install libssl-dev vim vim-airline-themes librtlsdr-dev libgpiod-dev gpiod build-essential screen cmake libsigc++-2.0-dev libpopt-dev tcl tcl-dev libpopt-dev libgcrypt-dev libasound-dev libgsm1-dev alsa-utils opus-tools libogg-dev libspeex-dev libopus-dev libjsoncpp-dev libcurl4-gnutls-dev
-mkdir build; cd build
-cmake ../ -DUSE_QT=NO
-make -j2
-
-- Anpassung /boot/config.txt
-#dtparam=audio=on meistens Zeile 53 auf off setzten
-dtparam=i2s=on
-dtparam=i2c=on
-dtparam=i2c_arm=on
-dtparam=i2c0=on
-dtparam=i2c1=on
-dtparam=i2c_vc=on
-dtparam=spi=on
-dtoverlay=rpi-proto
-dtoverlay=i2s-mmap
-
-- Anpassung /boot/cmdline.txt
-anhängen bcm2708.vc_i2c_override=1
-
-- Anpassung /etc/modules
-i2c-dev
-snd_soc_rpi_proto
-
-- Overlay runter laden und speichern
-sudo wget https://github.com/raspberrypi/firmware/raw/master/boot/overlays/i2c-gpio.dtbo -O /boot/overlays/i2c-gpio.dtbo
-
-- Reboot
-
 git clone https://github.com/raspberrypi/hats.git
 cd hats/eepromutils
 make
