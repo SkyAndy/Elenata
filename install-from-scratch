@@ -1,10 +1,10 @@
 # DK1LO 3.4.2k25
 # Linux elenata 6.12.21-v8+ #1870 SMP PREEMPT Wed Apr  2 20:18:03 BST 2025 aarch64 GNU/Linux
 
-# nur bis Elenata bis Version XI
+# 32-bit für Elenata bis Version XI
 rpi-imager Raspberry Pi OS Lite (32-bit) !!! nicht 64bit !!! 19.11.2024 zum Zeitpunk der Doku
 
-# Elenata ab/für TL5v1 - XS - 2025
+# 64-bit ab-/für Elenata Versionen TL5v1 - XS - 2025
 rpi-imager Raspberry Pi OS Lite (64-bit) 19.11.2024 zum Zeitpunk der Doku
 
 sudo su
