@@ -38,12 +38,15 @@ EOF
 cat << EOF > /boot/firmware/config.txt
 dtoverlay=i2s-mmap
 # Elenata bis Version XI
-# ACHTUNG mit neuerer kernel und PI3xx Blauzahn verbieten
-dtoverlay=pi3-disable-bt
-dtoverlay=rpi-proto
+# ACHTUNG mit neuerer kernel und PI3xx Blauzahn verbieten also folgende zwei Zeilen auskommentieren
+# dtoverlay=pi3-disable-bt
+# dtoverlay=rpi-proto
 
 # Bei Elenata ab/für TL5v1 - XS - 2025
-#dtoverlay=fe-pi-audio
+# folgende Zeile (47) auskommentieren und die Zeilen 42 und 43 einkommentieren.
+# dtoverlay=fe-pi-audio
+
+# BITTE nur ein rpi Overlay aktivieren
 
 dtparam=audio=off
 dtparam=i2c_arm=on
