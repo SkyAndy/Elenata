@@ -1,0 +1,39 @@
+Raspberry Pi Imager ausm Web holen
+Starten und bei Model nichts auswhälen
+beim Betriebssystem -> ( other ) -> Raspberry Pi OS Lite (32-bit) oder (64-bit)
+
+ERKLÄRUNG:
+·  bcm2708.vc_i2c_override=1 
+Kernel darf GPU-reserviertes I²C direkt benutzen
+·  ·  Nur nötig, wenn du ein Board hast, das direkt I²C für Audio oder HATs braucht.
+·  ·  Keine Auswirkungen auf normale Pi-Hardware, solange kein Konflikt besteht.
+
+
+sudo su
+
+nano /boot/firmware/cmdline.txt 
+Anhängen -> bcm2708.vc_i2c_override=1 <- kein Enter drücken alles in eine Zeile ohne Umbruch
+Beispielausgabe...
+bei Euch steht hinter root=PARTUUID etwas anderes.
+console=serial0,115200 console=tty1 root=PARTUUID=7f99afd9-02 rootfstype=ext4 fsck.repair=yes rootwait bcm2708.vc_i2c_override=1
+
+In der Datei /boot/firmware/config.txt alle Zeilen löschen, nicht aber die Dateiu selber löschen.
+
+Nun schalten wir spi und i2c mit Hilfe von raspi-config ein ( enable )
+
+Die Datei /boot/firmware/config.txt sollte nun zwei Einträge mehr haben.
+Wir öffnen diese und setzten an erste Stelle dtoverlay=rpi-proto hinzu.
+Die Datei sollte nun so aussehen.
+dtoverlay=rpi-proto
+dtparam=spi=on
+dtparam=i2c_arm=on
+
+Bei neuer Kernel installation kommen Fehler, diese beheben wie mit
+nano /etc/initramfs-tools/initramfs.conf dort auf MODULES=most ändern
+
+Jetzt ist es wichtig, alles im Alsamixer bis auf die letzten drei unmuten sonst kommt auch der IO Fehler
+Mit F4 zum Capture wechseln und Line mit den Richtungstasten anwählen und mit der Leertaste CAPTURE aktivieren 
+
+speaker-test -Dplughw:sndrpiproto -c2 -l -f 1750 sine
+
+apt install firmware-linux-free
