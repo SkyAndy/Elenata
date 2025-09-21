@@ -1,0 +1,4 @@
+dtoverlay=rpi-proto
+dtparam=spi=on
+dtparam=i2c_arm=on
+  
